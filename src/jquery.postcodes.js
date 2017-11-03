@@ -65,6 +65,9 @@
     input_class: "",
     input_id: "idpc_input",
 
+    premise_input: undefined,
+    $premise_input: undefined,
+
     // Button configuration
     button: undefined,
     $button: undefined,
@@ -201,6 +204,10 @@
 
   AddressFinderController.prototype.setupInputField = function () {
     var self = this;
+    if ($(this.premise_input).length) {
+      this.$premise_input = $(this.premise_input).first();
+    }
+    console.log(this.$premise_input)
     if ($(this.input).length) {
       // Use custom input
       this.$input = $(this.input).first();
@@ -266,6 +273,10 @@
 
       var executeLookup = function () {
         var term = self.$input.val();
+        // If premise input exists, prefix to postcode
+        if (self.$premise_input) {
+          term = self.$premise_input.val() + " " + term;
+        }
         if (self.last_lookup !== term) {
           self.last_lookup = term;
           self.clearAll();
