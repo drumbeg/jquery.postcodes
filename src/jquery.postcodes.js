@@ -5,7 +5,7 @@
  * Copyright (c) 2014 Ideal Postcodes
  * Licensed under the MIT license.
  *
- * This plugin requires an account at 
+ * This plugin requires an account at
  * https://ideal-postcodes.co.uk
  */
 
@@ -49,8 +49,8 @@
       su_organisation_indicator: undefined,
       delivery_point_suffix: undefined
     },
-    
-    /* 
+
+    /*
      * Below is not required
      */
 
@@ -141,14 +141,14 @@
     onDropdownCreated: undefined,     // When the address selection dropdown is inserted to DOM
     onDropdownDestroyed: undefined,   // When the address selection dropdown is removed (following new search)
     onLookupTriggered: undefined,     // When user clicks the button to trigger a lookup
-    shouldLookupTrigger: undefined,   // 
+    shouldLookupTrigger: undefined,   //
     onSearchError: undefined,         // When a request succeeds but the API returns an error code
 
     // Tags to be included with search requests
     tags: undefined
   };
 
-  /* 
+  /*
    * Utility method to remove organisation from Address result
    *
    * All organisations will have their name as first line
@@ -315,7 +315,7 @@
         self.$button.prop('disabled', false).html(self.button_label);
       }, self.disable_interval);
     }
-  }; 
+  };
 
   /*
    * Clears the following fields
@@ -372,9 +372,9 @@
           self.setDropDown(addresses);
 
         } else {
-          message = self.address_search ? self.error_message_address_not_found : 
+          message = self.address_search ? self.error_message_address_not_found :
             self.error_message_not_found;
-          self.setErrorMessage(message); 
+          self.setErrorMessage(message);
         }
       }
 
@@ -398,7 +398,7 @@
   AddressFinderController.prototype.executePostcodeSearch = function (postcode, callback) {
     var self = this;
     var options = {
-      query: postcode, 
+      query: postcode,
       api_key: self.api_key
     };
 
@@ -423,7 +423,7 @@
       query: query,
       api_key: self.api_key
     };
-    
+
     if (typeof self.address_search === "object") {
       options.limit = self.address_search.limit || 10;
     }
@@ -441,7 +441,7 @@
 
   /*
    *  Caches search result with raw data object
-   */ 
+   */
 
   AddressFinderController.prototype.cacheSearchResults = function (data) {
     if (data === null) {
@@ -465,7 +465,7 @@
     var suggestionFormatter = self.address_formatters.postcode_search;
     if (self.address_search) {
       suggestionFormatter = self.address_formatters.address_search;
-    } 
+    }
 
     if (this.$dropdown && this.$dropdown.length) {
       this.$dropdown.remove();
@@ -488,7 +488,7 @@
       value: "ideal",
       text: self.dropdown_select_message
     }).appendTo(dropDown);
-    
+
     var length = data.length;
     for (var i = 0; i < length; i += 1) {
       $('<option />', {
@@ -525,7 +525,7 @@
     if (self.onDropdownCreated) {
       self.onDropdownCreated.call(self, dropDown);
     }
-    
+
     self.$dropdown = dropDown;
 
     return dropDown;
@@ -598,6 +598,7 @@
      *  - options.query: (string) Postcode to lookup, case and space insensitive
      *  - options.api_key: (string) API Key required
      *  - options.licensee: (string) Licensee key
+     *  - options.endpoint (string) Base URL for API
      * - success: (function) Callback invoked upon successful request
      * - error: (function) Optional callback invoked upon failed HTTP request
      */
@@ -605,7 +606,7 @@
     lookupPostcode: function (o, callback) {
       var postcode = o.query || o.postcode || "";
       var api_key = o.api_key || "";
-      var endpoint = defaults.endpoint;
+      var endpoint = o.endpoint || defaults.endpoint;
       var resource = "postcodes";
       var url = [endpoint, resource, encodeURI(postcode)].join('/');
       var queryString = {
@@ -655,6 +656,7 @@
      *   - options.api_key: (string) API Key required
      *   - options.licensee: (string) Licensee key
      *   - options.limit: (number) Maximum number of addresses to return (default 10)
+     *   - options.endpoint (string) Base URL for API
      * - success: (function) Callback invoked upon successful request
      * - error: (function) Optional callback invoked upon failed HTTP request
      */
@@ -662,7 +664,7 @@
     lookupAddress: function (o, callback) {
       var query = o.query || "";
       var api_key = o.api_key || "";
-      var endpoint = defaults.endpoint;
+      var endpoint = o.endpoint || defaults.endpoint;
       var resource = "addresses";
       var url = [endpoint, resource].join('/');
       var queryString = {
@@ -677,7 +679,7 @@
           return callback(new Error("Request Failed: " + error), [], null, jqxhr);
         };
       }
-      
+
       queryString.limit = o.limit || 10;
 
       if (o.tags && $.isArray(o.tags)) {
@@ -711,6 +713,7 @@
      * - options: (object) Configuration object for key checking
      *  - options.api_key: (string) API Key to test
      *  - options.licensee: (string) Licensee key
+     *  - options.endpoint: (string) Base URL for API
      * - success: (function) Callback invoked when key is available
      * - error: (function) Optional callback invoked when key is not available or HTTP request failed
      */
@@ -742,7 +745,7 @@
         };
       }
 
-      var endpoint = defaults.endpoint;
+      var endpoint = o.endpoint || defaults.endpoint;
       var resource = "keys";
       var url = [endpoint, resource, api_key].join('/');
       var options = {
