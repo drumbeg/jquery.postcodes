@@ -28,7 +28,7 @@
   "main": "dist/postcodes.min.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ideal-postcodes/jquery.postcodes.git"
+    "url": "https://github.com/drumbeg/jquery.postcodes.git"
   },
   "keywords": [
     "postcode",

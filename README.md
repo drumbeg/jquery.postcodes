@@ -2,9 +2,7 @@
 
 Add UK address lookups with a simple postcode input field on any web form with the Ideal-Postcodes.co.uk API. Ideal Postcodes uses Royal Mail's addressing database, the Postcode Address File (PAF).
 
-[![Build Status](https://travis-ci.org/ideal-postcodes/jquery.postcodes.png)](https://travis-ci.org/ideal-postcodes/jquery.postcodes) 
-[![Sauce Test Status](https://saucelabs.com/buildstatus/cablanchard)](https://saucelabs.com/u/cablanchard)
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/cablanchard.svg)](https://saucelabs.com/u/cablanchard)
+[![Build Status](https://travis-ci.org/drumbeg/jquery.postcodes.png)](https://travis-ci.org/drumbeg/jquery.postcodes)
 
 PAF is licensed from the Royal Mail and incurs a license fee per lookup. We make PAF available to the public at **2p** per [external](https://ideal-postcodes.co.uk/termsandconditions#external) lookup.
 
