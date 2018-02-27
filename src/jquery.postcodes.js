@@ -609,14 +609,14 @@
      */
 
     lookupPostcode: function (o, callback) {
-      var postcode = o.query || encodeURI(o.postcode) || "";
+      var postcode = o.query || o.postcode || "";
       var api_key = o.api_key || "";
       var endpoint = o.endpoint || defaults.endpoint;
       var resource_suffix = typeof o.resource_suffix === 'undefined' ? defaults.resource_suffix : o.resource_suffix;
       var resource = "postcodes";
       var url = (resource_suffix ?
-        [endpoint].concat([resource, postcode]) :
-        [endpoint].concat([postcode])).join('/');
+        [endpoint].concat([resource, encodeURI(postcode)]) :
+        [endpoint].concat([encodeURI(postcode)])).join('/');
       var queryString = {
         api_key: api_key
       };
