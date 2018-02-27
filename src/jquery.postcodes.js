@@ -8,7 +8,6 @@
  * This plugin requires an account at
  * https://ideal-postcodes.co.uk
  */
-
 (function($) {
   "use strict";
   // Cache for all new instances of the plugin
@@ -55,6 +54,7 @@
      */
 
     endpoint: "https://api.ideal-postcodes.co.uk/v1",
+    resource_suffix: true,
 
     // Input Field Configuration
     input: undefined,
@@ -353,6 +353,7 @@
     var self = this;
     var message;
     var callback = function (error, addresses, data) {
+
       self.enableLookup();
       self.cacheSearchResults(data);
       if (error) {
@@ -399,7 +400,9 @@
     var self = this;
     var options = {
       query: postcode,
-      api_key: self.api_key
+      api_key: self.api_key,
+      endpoint: self.endpoint,
+      resource_suffix: self.resource_suffix
     };
 
     if (self.tags) {
@@ -604,15 +607,20 @@
      */
 
     lookupPostcode: function (o, callback) {
-      var postcode = o.query || o.postcode || "";
+      var postcode = o.query || encodeURI(o.postcode) || "";
       var api_key = o.api_key || "";
       var endpoint = o.endpoint || defaults.endpoint;
       var resource = "postcodes";
-      var url = [endpoint, resource, encodeURI(postcode)].join('/');
+      var url = (o.resource_suffix ?
+        [endpoint].concat([resource, postcode]) :
+        [endpoint].concat([postcode])).join('/');
       var queryString = {
         api_key: api_key
       };
       var errorHandler;
+
+
+
       if (o.error) {
         errorHandler = o.error;
       } else {
@@ -632,7 +640,7 @@
       var options = {
         url: url,
         data: queryString,
-        dataType: 'jsonp',
+        dataType: 'json',
         timeout: 10000,
         success: function (data, _, jqxhr) {
           if (data.code === 2000) {
@@ -645,7 +653,6 @@
         },
         error: errorHandler
       };
-
       $.ajax(options);
     },
 
@@ -746,8 +753,11 @@
       }
 
       var endpoint = o.endpoint || defaults.endpoint;
+      var resource_suffix = o.resource_suffix || defaults.resource_suffix;
       var resource = "keys";
-      var url = [endpoint, resource, api_key].join('/');
+      var url = (resource_suffix ?
+        [endpoint].concat([resource, api_key]) :
+        [endpoint].concat([api_key])).join('/');
       var options = {
         url: url,
         dataType: 'jsonp',
