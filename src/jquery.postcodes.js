@@ -424,7 +424,9 @@
     var self = this;
     var options = {
       query: query,
-      api_key: self.api_key
+      api_key: self.api_key,
+      endpoint: self.endpoint,
+      resource_suffix: self.resource_suffix
     };
 
     if (typeof self.address_search === "object") {
@@ -610,8 +612,9 @@
       var postcode = o.query || encodeURI(o.postcode) || "";
       var api_key = o.api_key || "";
       var endpoint = o.endpoint || defaults.endpoint;
+      var resource_suffix = typeof o.resource_suffix === 'undefined' ? defaults.resource_suffix : o.resource_suffix;
       var resource = "postcodes";
-      var url = (o.resource_suffix ?
+      var url = (resource_suffix ?
         [endpoint].concat([resource, postcode]) :
         [endpoint].concat([postcode])).join('/');
       var queryString = {
@@ -672,8 +675,11 @@
       var query = o.query || "";
       var api_key = o.api_key || "";
       var endpoint = o.endpoint || defaults.endpoint;
+      var resource_suffix = typeof o.resource_suffix === 'undefined' ? defaults.resource_suffix : o.resource_suffix;
       var resource = "addresses";
-      var url = [endpoint, resource].join('/');
+      var url = resource_suffix ?
+        [endpoint].concat([resource]).join('/') :
+        endpoint;
       var queryString = {
         api_key: api_key,
         query: query
@@ -753,7 +759,7 @@
       }
 
       var endpoint = o.endpoint || defaults.endpoint;
-      var resource_suffix = o.resource_suffix || defaults.resource_suffix;
+      var resource_suffix = typeof o.resource_suffix === 'undefined' ? defaults.resource_suffix : o.resource_suffix;
       var resource = "keys";
       var url = (resource_suffix ?
         [endpoint].concat([resource, api_key]) :
