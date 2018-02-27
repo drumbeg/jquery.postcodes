@@ -69,9 +69,9 @@
     button: undefined,
     $button: undefined,
     button_id: "idpc_button",
-    button_label: "Find my Address",
+    button_label: "Find Address",
     button_class: "",
-    button_disabled_message: "Looking up postcode...",
+    button_disabled_message: "Searching...",
 
     // Dropdown configuration
     $dropdown: undefined,
@@ -246,6 +246,7 @@
     var self = this;
     if ($(self.button).length) {
       self.$button = $(self.button).first();
+      self.button_label = self.$button.html();
     } else {
       self.$button = $('<button />', {
         html: self.button_label,
@@ -290,10 +291,6 @@
    */
 
   AddressFinderController.prototype.disableLookup = function (message) {
-    // Cancel if custom button
-    if (this.button) {
-      return;
-    }
     message = message || this.button_disabled_message;
     this.$button.prop('disabled', true).html(message);
   };
@@ -303,11 +300,8 @@
    */
 
   AddressFinderController.prototype.enableLookup = function () {
-    // Cancel if custom button
-    if (this.button) {
-      return;
-    }
     var self = this;
+
     if (self.disable_interval === 0) {
       self.$button.prop('disabled', false).html(self.button_label);
     } else {
